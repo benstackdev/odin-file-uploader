@@ -1,3 +1,4 @@
+import { headingStyle } from "~/styles/styleTemplates";
 import type { Route } from "./+types/home";
 
 export function meta({ }: Route.MetaArgs) {
@@ -8,5 +9,5 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <h1>Test</h1>;
+  return <h1 className={headingStyle}>Odin File Uploader</h1>;
 }
