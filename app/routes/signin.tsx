@@ -32,7 +32,7 @@ const Signin = ({ actionData }: Route.ComponentProps) => {
       }
     });
 
-    if (!error) navigate("/dashboard");
+    if (!error) navigate("/");
   };
 
   return (
