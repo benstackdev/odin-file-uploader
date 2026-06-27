@@ -5,7 +5,8 @@ const Layout = () => {
     <div className="">
       <nav className={`flex justify-center gap-8 mb-4`}>
         <NavLink to={`/`}>Home</NavLink>
-        <NavLink to={`/signup`}>Sign Up</NavLink>
+        <NavLink to={`/sign-up`}>Sign Up</NavLink>
+        <NavLink to={`/sign-in`}>Sign In</NavLink>
       </nav>
       <Outlet />
     </div>

@@ -1,14 +1,13 @@
 import { data, Form, redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/signup";
 import { authErrorContainerStyle, authErrorHeadingStyle, authErrorItemStyle, authErrorListStyle, buttonStyle, formInputStyle, formRowStyle, formStyle, headingStyle } from "~/styles/styleTemplates";
-import { signupValidator } from "~/lib/signup-validator";
 import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
+import { signinValidator } from "~/lib/signin-validator";
 
-const Signup = ({ actionData }: Route.ComponentProps) => {
+const Signin = ({ actionData }: Route.ComponentProps) => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,31 +15,29 @@ const Signup = ({ actionData }: Route.ComponentProps) => {
 
   if (actionData && errorList.length === 0) setErrorList(actionData);
 
-  const authSignUp = async () => {
+  const authSignIn = async () => {
     // Authenticate with Better Auth
-    const { data, error } = await authClient.signUp.email({
+    const { data, error } = await authClient.signIn.email({
       email,
-      password,
-      name,
-      callbackURL: "/sign-in"
+      password
     }, {
       onRequest: (ctx) => {
         // loading
       },
       onSuccess: (ctx) => {
-        console.log("signup success");
+        console.log("signin success");
       },
       onError: (ctx) => {
 
       }
     });
 
-    if (!error) navigate("/sign-in");
+    if (!error) navigate("/dashboard");
   };
 
   return (
     <div className={authErrorContainerStyle}>
-      <h1 className={headingStyle}>Sign Up</h1>
+      <h1 className={headingStyle}>Sign In</h1>
       {
         errorList.length > 0 ?
           (
@@ -58,12 +55,8 @@ const Signup = ({ actionData }: Route.ComponentProps) => {
           :
           null
       }
-      <Form className={formStyle} method="post" onSubmit={authSignUp}>
+      <Form className={formStyle} method="post" onSubmit={authSignIn}>
         <div className="mb-4">
-          <div className={formRowStyle}>
-            <label htmlFor="name">Display Name: </label>
-            <input className={formInputStyle} type="text" id="name" name="name" onChange={(e) => setName(e.target.value)} />
-          </div>
           <div className={formRowStyle}>
             <label htmlFor="email">Email Address: </label>
             <input className={formInputStyle} type="email" id="email" name="email" onChange={(e) => setEmail(e.target.value)} />
@@ -72,12 +65,8 @@ const Signup = ({ actionData }: Route.ComponentProps) => {
             <label htmlFor="password">Password: </label>
             <input className={formInputStyle} type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <div className={formRowStyle}>
-            <label htmlFor="passwordconfirm">Confirm Password: </label>
-            <input className={formInputStyle} type="password" id="passwordconfirm" name="passwordconfirm" />
-          </div>
         </div>
-        <button type="submit" className={buttonStyle}>Sign Up</button>
+        <button type="submit" className={buttonStyle}>Sign In</button>
       </Form>
     </div>
   );
@@ -87,15 +76,12 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
 
   // Get data from form to eventually pass to Better Auth
-  const name = String(formData.get("name"));
   const email = String(formData.get("email"));
-  const password = String(formData.get("password"));
-  const confirmPassword = String(formData.get("passwordconfirm"));
 
   // Client-side sign up form validator
-  const errors: string[] = signupValidator(name, email, password, confirmPassword);
+  const errors: string[] = signinValidator(email);
 
   if (errors.length > 0) return errors;
 };
 
-export default Signup;
+export default Signin;
