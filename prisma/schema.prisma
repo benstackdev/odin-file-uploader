@@ -72,10 +72,11 @@ model Verification {
 }
 
 model File {
-  id       String @id
-  folderId String
-  folder   Folder @relation(fields: [folderId], references: [id])
-  data     Bytes
+  id         String   @id
+  folderId   String
+  folder     Folder   @relation(fields: [folderId], references: [id])
+  uploadedAt DateTime @default(now())
+  data       Bytes
 }
 
 model Folder {
