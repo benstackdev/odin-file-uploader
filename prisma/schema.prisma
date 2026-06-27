@@ -17,7 +17,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  drives        Drive[]
+  folders       Folder[]
 
   @@unique([email])
   @@map("user")
@@ -73,8 +73,6 @@ model Verification {
 
 model File {
   id       String @id
-  driveId  String
-  drive    Drive  @relation(fields: [driveId], references: [id])
   folderId String
   folder   Folder @relation(fields: [folderId], references: [id])
   data     Bytes
@@ -82,18 +80,11 @@ model File {
 
 model Folder {
   id       String   @id
-  driveId  String
-  drive    Drive    @relation(fields: [driveId], references: [id])
+  isRoot   Boolean
+  userId   String?
+  user     User?    @relation(fields: [userId], references: [id])
   parentId String?
   parent   Folder?  @relation("Folders", fields: [parentId], references: [id])
   children Folder[] @relation("Folders")
   files    File[]
-}
-
-model Drive {
-  id      String   @id
-  userId  String
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  files   File[]
-  folders Folder[]
 }
