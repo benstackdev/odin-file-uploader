@@ -8,7 +8,7 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import ErrorList from "~/components/errorList";
+import ErrorList from "~/components/ErrorList";
 
 const Signup = ({ actionData }: Route.ComponentProps) => {
   const navigate = useNavigate();
@@ -50,7 +50,9 @@ const Signup = ({ actionData }: Route.ComponentProps) => {
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
           <CardDescription>Create a new Odin File Uploader Account</CardDescription>
-          <CardAction></CardAction>
+          <CardAction>
+            <Button variant="link" onClick={() => navigate("/sign-in")}>Sign In</Button>
+          </CardAction>
         </CardHeader>
         <CardContent>
           <Form className={formStyle} method="post" onSubmit={authSignUp}>

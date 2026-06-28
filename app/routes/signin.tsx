@@ -4,6 +4,11 @@ import { authErrorContainerStyle, authErrorHeadingStyle, authErrorItemStyle, aut
 import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
 import { signinValidator } from "~/lib/signin-validator";
+import ErrorList from "~/components/ErrorList";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { Label } from "~/components/ui/label";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 
 const Signin = ({ actionData }: Route.ComponentProps) => {
   const navigate = useNavigate();
@@ -36,38 +41,32 @@ const Signin = ({ actionData }: Route.ComponentProps) => {
   };
 
   return (
-    <div className={authErrorContainerStyle}>
-      <h1 className={headingStyle}>Sign In</h1>
-      {
-        errorList.length > 0 ?
-          (
-            <div className="">
-              <h2 className={authErrorHeadingStyle}>Sign Up Errors</h2>
-              <ul className={authErrorListStyle}>
-                {errorList.map(error => {
-                  return (
-                    <li className={authErrorItemStyle}>{error}</li>
-                  );
-                })}
-              </ul>
+    <div className="w-full max-w-sm">
+      {errorList.length > 0 ? <ErrorList list={errorList} /> : null}
+      <Card>
+        <CardHeader>
+          <CardTitle>Sign In</CardTitle>
+          <CardDescription>
+            Sign into your Odin File Uploader Account
+          </CardDescription>
+          <CardAction>
+            <Button variant="link" onClick={() => navigate("/sign-up")}>Sign Up</Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <Form className={formStyle} method="post" onSubmit={authSignIn}>
+            <div className={formRowStyle}>
+              <Label htmlFor="email">Email Address: </Label>
+              <Input type="email" id="email" name="email" placeholder="you@example.com" onChange={(e) => setEmail(e.target.value)} />
             </div>
-          )
-          :
-          null
-      }
-      <Form className={formStyle} method="post" onSubmit={authSignIn}>
-        <div className="mb-4">
-          <div className={formRowStyle}>
-            <label htmlFor="email">Email Address: </label>
-            <input className={formInputStyle} type="email" id="email" name="email" onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div className={formRowStyle}>
-            <label htmlFor="password">Password: </label>
-            <input className={formInputStyle} type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
-          </div>
-        </div>
-        <button type="submit" className={buttonStyle}>Sign In</button>
-      </Form>
+            <div className={formRowStyle}>
+              <Label htmlFor="password">Password: </Label>
+              <Input type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <Button type="submit">Sign In</Button>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
