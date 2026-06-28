@@ -4,6 +4,11 @@ import { authErrorContainerStyle, authErrorHeadingStyle, authErrorItemStyle, aut
 import { signupValidator } from "~/lib/signup-validator";
 import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
+import { Label } from "~/components/ui/label";
+import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
+import ErrorList from "~/components/errorList";
 
 const Signup = ({ actionData }: Route.ComponentProps) => {
   const navigate = useNavigate();
@@ -39,46 +44,36 @@ const Signup = ({ actionData }: Route.ComponentProps) => {
   };
 
   return (
-    <div className={authErrorContainerStyle}>
-      <h1 className={headingStyle}>Sign Up</h1>
-      {
-        errorList.length > 0 ?
-          (
-            <div className="">
-              <h2 className={authErrorHeadingStyle}>Sign Up Errors</h2>
-              <ul className={authErrorListStyle}>
-                {errorList.map(error => {
-                  return (
-                    <li className={authErrorItemStyle}>{error}</li>
-                  );
-                })}
-              </ul>
+    <div className="w-full max-w-sm">
+      {errorList.length > 0 ? <ErrorList list={errorList} /> : null}
+      <Card>
+        <CardHeader>
+          <CardTitle>Sign Up</CardTitle>
+          <CardDescription>Create a new Odin File Uploader Account</CardDescription>
+          <CardAction></CardAction>
+        </CardHeader>
+        <CardContent>
+          <Form className={formStyle} method="post" onSubmit={authSignUp}>
+            <div className={formRowStyle}>
+              <Label htmlFor="name">Display Name: </Label>
+              <Input type="text" id="name" name="name" onChange={(e) => setName(e.target.value)} />
             </div>
-          )
-          :
-          null
-      }
-      <Form className={formStyle} method="post" onSubmit={authSignUp}>
-        <div className="mb-4">
-          <div className={formRowStyle}>
-            <label htmlFor="name">Display Name: </label>
-            <input className={formInputStyle} type="text" id="name" name="name" onChange={(e) => setName(e.target.value)} />
-          </div>
-          <div className={formRowStyle}>
-            <label htmlFor="email">Email Address: </label>
-            <input className={formInputStyle} type="email" id="email" name="email" onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div className={formRowStyle}>
-            <label htmlFor="password">Password: </label>
-            <input className={formInputStyle} type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
-          </div>
-          <div className={formRowStyle}>
-            <label htmlFor="passwordconfirm">Confirm Password: </label>
-            <input className={formInputStyle} type="password" id="passwordconfirm" name="passwordconfirm" />
-          </div>
-        </div>
-        <button type="submit" className={buttonStyle}>Sign Up</button>
-      </Form>
+            <div className={formRowStyle}>
+              <Label htmlFor="email">Email Address: </Label>
+              <Input type="email" id="email" name="email" placeholder="you@example.com" onChange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div className={formRowStyle}>
+              <Label htmlFor="password">Password: </Label>
+              <Input type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <div className={formRowStyle}>
+              <Label htmlFor="passwordconfirm">Confirm Password: </Label>
+              <Input type="password" id="passwordconfirm" name="passwordconfirm" />
+            </div>
+            <Button type="submit">Sign Up</Button>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
