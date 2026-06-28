@@ -6,8 +6,8 @@ import { auth } from "~/lib/auth";
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Odin File Uploader" },
+    { name: "description", content: "Odin File Uploader" },
   ];
 }
 
