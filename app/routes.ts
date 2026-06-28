@@ -7,5 +7,6 @@ export default [
     route("/sign-in", "routes/signin.tsx"),
     route("/dashboard", "routes/dashboard.tsx")
   ]),
-  route("/api/auth/*", "routes/api.auth.$.ts")
+  route("/api/auth/*", "routes/api.auth.$.ts"),
+  route("/action/set-theme", "routes/action.set-theme.ts")
 ] satisfies RouteConfig;
