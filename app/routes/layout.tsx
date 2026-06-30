@@ -10,6 +10,8 @@ import {
 } from "../components/ui/navigation-menu";
 import { ModeToggle } from "~/components/ModeToggle";
 import { Separator } from "~/components/ui/separator";
+import { Button } from "~/components/ui/button";
+import Signout from "./signout";
 
 const Layout = () => {
   return (
@@ -40,7 +42,7 @@ const Layout = () => {
             <ModeToggle />
           </div>
           <Separator className="mx-2" orientation="vertical" />
-
+          <Signout />
         </div>
       </div>
       <Outlet />

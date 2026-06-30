@@ -5,7 +5,7 @@ export default [
     index("routes/home.tsx"),
     route("/sign-up", "routes/signup.tsx"),
     route("/sign-in", "routes/signin.tsx"),
-    route("/dashboard", "routes/dashboard.tsx")
+    route("/sign-out", "routes/signout.tsx")
   ]),
   route("/api/auth/*", "routes/api.auth.$.ts"),
   route("/action/set-theme", "routes/action.set-theme.ts")
