@@ -25,19 +25,12 @@ const Signin = ({ actionData }: Route.ComponentProps) => {
     const { data, error } = await authClient.signIn.email({
       email,
       password
-    }, {
-      onRequest: (ctx) => {
-        // loading
-      },
-      onSuccess: (ctx) => {
-        console.log("signin success");
-      },
-      onError: (ctx) => {
-
-      }
     });
 
-    if (!error) navigate("/");
+    if (!error) {
+      console.log("Signed in, navigating to root");
+      navigate("/");
+    }
   };
 
   return (

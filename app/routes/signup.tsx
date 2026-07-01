@@ -85,13 +85,16 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   try {
     // Create root folder for new user
-    await prisma.folder.create({
+    const rootFolder = await prisma.folder.create({
       data: {
         isRoot: true,
+        name: "Drive Root",
         userId: data.user.id
       }
     });
-    redirect("/sign-in");
+
+    if (rootFolder) return redirect("/sign-in");
+
   } catch (error) {
     console.error(error);
     return Response.json({ error: `Failed to create root folder for ${name}` }, { status: 500 });
