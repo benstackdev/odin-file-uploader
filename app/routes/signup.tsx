@@ -9,6 +9,8 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import ErrorList from "~/components/ErrorList";
+import prisma from "~/lib/prisma";
+import { auth } from "~/lib/auth";
 
 const Signup = ({ actionData }: Route.ComponentProps) => {
   const navigate = useNavigate();
@@ -20,28 +22,6 @@ const Signup = ({ actionData }: Route.ComponentProps) => {
   const [errorList, setErrorList] = useState<string[]>([]);
 
   if (actionData && errorList.length === 0) setErrorList(actionData);
-
-  const authSignUp = async () => {
-    // Authenticate with Better Auth
-    const { data, error } = await authClient.signUp.email({
-      email,
-      password,
-      name,
-      callbackURL: "/sign-in"
-    }, {
-      onRequest: (ctx) => {
-        // loading
-      },
-      onSuccess: (ctx) => {
-        console.log("signup success");
-      },
-      onError: (ctx) => {
-
-      }
-    });
-
-    if (!error) navigate("/sign-in");
-  };
 
   return (
     <div className="w-full max-w-sm">
@@ -55,7 +35,7 @@ const Signup = ({ actionData }: Route.ComponentProps) => {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <Form className={formStyle} method="post" onSubmit={authSignUp}>
+          <Form className={formStyle} method="post">
             <div className={formRowStyle}>
               <Label htmlFor="name">Display Name: </Label>
               <Input type="text" id="name" name="name" onChange={(e) => setName(e.target.value)} />
@@ -93,6 +73,29 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const errors: string[] = signupValidator(name, email, password, confirmPassword);
 
   if (errors.length > 0) return errors;
+
+  const data = await auth.api.signUpEmail({
+    body: {
+      email,
+      password,
+      name,
+      callbackURL: "/sign-in"
+    }
+  });
+
+  try {
+    // Create root folder for new user
+    await prisma.folder.create({
+      data: {
+        isRoot: true,
+        userId: data.user.id
+      }
+    });
+    redirect("/sign-in");
+  } catch (error) {
+    console.error(error);
+    return Response.json({ error: `Failed to create root folder for ${name}` }, { status: 500 });
+  }
 };
 
 export default Signup;

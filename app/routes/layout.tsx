@@ -1,16 +1,13 @@
 import { NavLink, Outlet } from "react-router";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "../components/ui/navigation-menu";
 import { ModeToggle } from "~/components/ModeToggle";
 import { Separator } from "~/components/ui/separator";
-import { Button } from "~/components/ui/button";
 import Signout from "./signout";
 
 const Layout = () => {

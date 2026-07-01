@@ -72,7 +72,7 @@ model Verification {
 }
 
 model File {
-  id         String   @id
+  id         String   @id @default(cuid())
   folderId   String
   folder     Folder   @relation(fields: [folderId], references: [id])
   uploadedAt DateTime @default(now())
@@ -80,7 +80,7 @@ model File {
 }
 
 model Folder {
-  id       String   @id
+  id       String   @id @default(cuid())
   isRoot   Boolean
   userId   String?
   user     User?    @relation(fields: [userId], references: [id])
